@@ -1,194 +1,212 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-900">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Comercial Interactivo - GitHub Pages App</title>
+    <title>Manual Interactivo Comercial & Guía de Consulta</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .chat-scroll::-webkit-scrollbar {
-            width: 6px;
+        .active-tab {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
+            font-weight: 600;
         }
-        .chat-scroll::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
-        }
-        .chat-scroll::-webkit-scrollbar-thumb {
-            background: rgba(51, 65, 85, 0.8);
-            border-radius: 3px;
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .chat-scroll {
+            max-height: 400px;
+            overflow-y: auto;
         }
     </style>
 </head>
-<body class="h-full text-slate-100 flex flex-col font-sans antialiased overflow-hidden">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Header Navigation -->
-    <header class="h-16 border-b border-slate-800 bg-slate-950/80 px-6 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-            <div class="bg-indigo-600 p-2 rounded-lg text-white">
-                <i class="fa-solid fa-headset text-xl"></i>
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-300"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide">Manual Interactivo Comercial</h1>
+                    <p class="text-xs text-indigo-200">Guía de Consulta Rápida y Entrenamiento en Ventas</p>
+                </div>
             </div>
-            <div>
-                <h1 class="font-bold text-lg leading-tight text-white">Simulador Comercial Interactivo</h1>
-                <p class="text-xs text-slate-400">Entrenamiento de Destreza y Cierre de Ventas</p>
+            <div class="flex items-center gap-2 bg-indigo-800 px-3 py-1.5 rounded-lg text-xs font-medium">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Metodología P.E.C.A. & Cierres Consultivos</span>
             </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-            <button id="btnNavSimulator" onclick="switchTab('simulator')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2">
-                <i class="fa-solid fa-comments"></i> Simulador
-            </button>
-            <button id="btnNavLibrary" onclick="switchTab('library')" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2">
-                <i class="fa-solid fa-book"></i> Banco de Casos
-            </button>
-            <button id="btnNavRubric" onclick="switchTab('rubric')" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2">
-                <i class="fa-solid fa-chart-simple"></i> Rúbrica
-            </button>
         </div>
     </header>
 
-    <!-- Main Content Body -->
-    <main class="flex-1 flex overflow-hidden relative">
+    <!-- Main Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-[72px] z-40">
+        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto gap-8 text-sm text-slate-600 font-medium">
+            <button onclick="switchTab('metodologia')" id="tab-metodologia" class="py-3 px-1 active-tab flex items-center gap-2 whitespace-nowrap">
+                <i data-lucide="compass" class="w-4 h-4"></i> Metodología P.E.C.A.
+            </button>
+            <button onclick="switchTab('banco')" id="tab-banco" class="py-3 px-1 flex items-center gap-2 whitespace-nowrap">
+                <i data-lucide="message-square-code" class="w-4 h-4"></i> Banco de Objeciones
+            </button>
+            <button onclick="switchTab('canales')" id="tab-canales" class="py-3 px-1 flex items-center gap-2 whitespace-nowrap">
+                <i data-lucide="phone-call" class="w-4 h-4"></i> Guías por Canal (WhatsApp / Llamada)
+            </button>
+            <button onclick="switchTab('practica')" id="tab-practica" class="py-3 px-1 flex items-center gap-2 whitespace-nowrap">
+                <i data-lucide="bot" class="w-4 h-4"></i> Módulo de Práctica Interactiva
+            </button>
+        </div>
+    </nav>
 
-        <!-- TAB 1: SIMULATOR (Chat & Interactive Sandbox) -->
-        <section id="tabSimulator" class="flex-1 flex flex-col md:flex-row h-full w-full">
-            
-            <!-- Sidebar / Scenario Configurator -->
-            <aside class="w-full md:w-80 border-r border-slate-800 bg-slate-950/50 p-4 flex flex-col gap-4 shrink-0 overflow-y-auto">
-                <h2 class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Configuración de la Sesión</h2>
-                
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Seleccionar Caso / Escenario</label>
-                    <select id="scenarioSelect" onchange="loadSelectedScenario()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <option value="wa1">WhatsApp: "Está muy caro / No tengo tiempo"</option>
-                        <option value="wa2">WhatsApp: "Dejó en visto / Re-enganche"</option>
-                        <option value="wa3">WhatsApp: "Comparativo con la Competencia"</option>
-                        <option value="ll1">Llamada: "Llamada en Frío / Prisa"</option>
-                        <option value="ll2">Llamada: "Debo consultarlo con un tercero"</option>
-                    </select>
-                </div>
+    <!-- Content Sections -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
 
-                <div class="p-3 rounded-lg glass-panel text-xs space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Canal:</span>
-                        <span id="badgeChannel" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-medium">WhatsApp</span>
+        <!-- SECCIÓN 1: METODOLOGÍA P.E.C.A. -->
+        <section id="sec-metodologia" class="space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i data-lucide="layers" class="text-indigo-600"></i> La Fórmula P.E.C.A. de Cierre Consultivo
+                </h2>
+                <p class="text-slate-600 mb-6">Utiliza este marco estructurado en cada interacción comercial para guiara al aspirante/cliente de forma metódica sin sonar agresivo.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="border border-indigo-100 bg-indigo-50/50 p-5 rounded-lg">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mb-3">P</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Pregunta</h3>
+                        <p class="text-xs text-slate-600">Haz preguntas abiertas para entender la verdadera raíz de su preocupación sin asumir hipótesis previas.</p>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Dificultad:</span>
-                        <span id="badgeDifficulty" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">Intermedio</span>
+                    <div class="border border-blue-100 bg-blue-50/50 p-5 rounded-lg">
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mb-3">E</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Explora</h3>
+                        <p class="text-xs text-slate-600">Profundiza en su situación personal, disponibilidad de tiempo y presupuesto para validar la factibilidad real.</p>
                     </div>
-                    <div>
-                        <span class="text-slate-400 block mb-1">Objetivo del Asesor:</span>
-                        <p id="scenarioObjective" class="text-slate-200 font-normal">Reencuadrar valor, indagar necesidades reales y agendar llamada.</p>
+                    <div class="border border-emerald-100 bg-emerald-50/50 p-5 rounded-lg">
+                        <div class="w-10 h-10 bg-emerald-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mb-3">C</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Conecta</h3>
+                        <p class="text-xs text-slate-600">Asocia el beneficio diferencial de la propuesta directamente con los dolores declarados por el cliente.</p>
                     </div>
-                </div>
-
-                <div class="space-y-2 mt-2">
-                    <button onclick="resetSimulation()" class="w-full py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium transition flex items-center justify-center gap-2 border border-slate-700">
-                        <i class="fa-solid fa-rotate-left"></i> Reiniciar Caso
-                    </button>
-                    <button onclick="triggerEvaluation()" class="w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
-                        <i class="fa-solid fa-check-double"></i> Solicitar Evaluación
-                    </button>
-                </div>
-
-                <div class="mt-auto pt-4 border-t border-slate-800/80">
-                    <div class="text-[11px] text-slate-500 space-y-1">
-                        <p><i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> <strong>Tip Comercial:</strong> No ofrezcas descuentos de inmediato. Indaga la razón detrás del precio antes de argumentar.</p>
+                    <div class="border border-amber-100 bg-amber-50/50 p-5 rounded-lg">
+                        <div class="w-10 h-10 bg-amber-600 text-white rounded-lg flex items-center justify-center font-bold text-lg mb-3">A</div>
+                        <h3 class="font-semibold text-slate-900 mb-1">Avanza</h3>
+                        <p class="text-xs text-slate-600">Establece un llamado a la acción concreto e inmediato con compromiso de fecha y hora exacta.</p>
                     </div>
                 </div>
-            </aside>
+            </div>
+        </section>
 
-            <!-- Chat / Simulation Area -->
-            <div class="flex-1 flex flex-col h-full bg-slate-900 relative">
-                
-                <!-- Chat Header -->
-                <div class="h-14 border-b border-slate-800 px-6 flex items-center justify-between bg-slate-900/90 z-10">
-                    <div class="flex items-center gap-3">
-                        <div class="relative">
-                            <div class="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-sm border border-indigo-500/30">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute bottom-0 right-0 ring-2 ring-slate-900"></span>
+        <!-- SECCIÓN 2: BANCO DE OBJECIONES -->
+        <section id="sec-banco" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i data-lucide="help-circle" class="text-indigo-600"></i> Banco de Objeciones Frecuentes
+                </h2>
+                <p class="text-slate-600 mb-6 text-sm">Recuerda: El 80% de las primeras objeciones son solo cortinas de humo. Haz clic en cada caso para ver la estrategia de abordaje recomendado.</p>
+
+                <div class="space-y-4">
+                    <!-- Objeción 1 -->
+                    <div class="border border-slate-200 rounded-lg p-4 hover:border-indigo-300 transition-all bg-slate-50/50">
+                        <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('obj-1')">
+                            <span class="font-semibold text-slate-800">1. "Está muy costoso / No tengo presupuesto"</span>
+                            <i data-lucide="chevron-down" id="icon-obj-1" class="w-5 h-5 text-slate-500"></i>
                         </div>
-                        <div>
-                            <h3 id="chatClientName" class="font-semibold text-sm text-white">Prospecto (Simulación)</h3>
-                            <p id="chatClientStatus" class="text-[11px] text-slate-400">Respondiendo en tiempo real...</p>
+                        <div id="obj-1" class="hidden mt-3 pt-3 border-t border-slate-200 text-sm space-y-2">
+                            <p class="text-slate-700"><strong>Diagnóstico:</strong> Suele ser falta de valor percibido más que falta real de dinero.</p>
+                            <p class="text-slate-700"><strong>Respuesta sugerida:</strong> <em>"Entiendo perfectamente que el factor económico sea prioritario para ti. Para ayudarte a evaluar si realmente se ajusta a lo que buscas, ¿con qué opción o alternativa lo estás comparando actualmente?"</em></p>
                         </div>
                     </div>
-                    <div class="text-xs text-slate-400 bg-slate-800/60 px-3 py-1 rounded-full">
-                        Escribe <span class="text-indigo-400 font-mono">[EVALUAR]</span> para finalizar.
+
+                    <!-- Objeción 2 -->
+                    <div class="border border-slate-200 rounded-lg p-4 hover:border-indigo-300 transition-all bg-slate-50/50">
+                        <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('obj-2')">
+                            <span class="font-semibold text-slate-800">2. "Voy a pensarlo / Lo reviso después"</span>
+                            <i data-lucide="chevron-down" id="icon-obj-2" class="w-5 h-5 text-slate-500"></i>
+                        </div>
+                        <div id="obj-2" class="hidden mt-3 pt-3 border-t border-slate-200 text-sm space-y-2">
+                            <p class="text-slate-700"><strong>Diagnóstico:</strong> Falta de urgencia o duda específica no resuelta en la llamada/chat.</p>
+                            <p class="text-slate-700"><strong>Respuesta sugerida:</strong> <em>"Por supuesto. Normalmente cuando alguien necesita pensarlo es porque falta aclarar un punto clave o porque hay algún detalle que no termina de convencerte. De lo que conversamos hoy, ¿qué punto específico es el que más te genera dudas?"</em></p>
+                        </div>
+                    </div>
+
+                    <!-- Objeción 3 -->
+                    <div class="border border-slate-200 rounded-lg p-4 hover:border-indigo-300 transition-all bg-slate-50/50">
+                        <div class="flex justify-between items-center cursor-pointer" onclick="toggleAccordion('obj-3')">
+                            <span class="font-semibold text-slate-800">3. "Debo consultarlo con mi familia / pareja"</span>
+                            <i data-lucide="chevron-down" id="icon-obj-3" class="w-5 h-5 text-slate-500"></i>
+                        </div>
+                        <div id="obj-3" class="hidden mt-3 pt-3 border-t border-slate-200 text-sm space-y-2">
+                            <p class="text-slate-700"><strong>Diagnóstico:</strong> Búsqueda de validación externa o evasión de responsabilidad de cierre.</p>
+                            <p class="text-slate-700"><strong>Respuesta sugerida:</strong> <em>"Me parece muy valioso que lo compartas en familia. Si dependiera 100% de ti en este momento, ¿tomarías la decisión de iniciar hoy mismo? ¿Qué información adicional necesitarían ellos para respaldarte?"</em></p>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Messages Container -->
-                <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4 chat-scroll">
-                    <!-- Dynamic Messages injected via JS -->
+        <!-- SECCIÓN 3: GUÍAS POR CANAL -->
+        <section id="sec-canales" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- WhatsApp -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 text-emerald-600">
+                        <i data-lucide="message-square"></i> Protocolo WhatsApp (Chat)
+                    </h3>
+                    <ul class="text-sm space-y-2 text-slate-600 list-disc pl-5">
+                        <li><strong>Mensajes cortos:</strong> Máximo 2 a 3 párrafos breves por interacción.</li>
+                        <li><strong>Pregunta obligatoria:</strong> Termina SIEMPRE cada mensaje con una pregunta abierta para mantener la conversación viva.</li>
+                        <li><strong>Uso de notas de voz:</strong> Solo audios de máximo 35 segundos para generar cercanía y explicar propuestas de valor.</li>
+                    </ul>
                 </div>
 
-                <!-- Input Area -->
-                <div class="p-4 border-t border-slate-800 bg-slate-950/60">
-                    <form id="chatForm" onsubmit="handleSendMessage(event)" class="flex gap-2">
-                        <input id="userInput" type="text" placeholder="Escribe tu respuesta comercial aquí..." autocomplete="off"
-                               class="flex-1 bg-slate-800/90 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl transition font-medium flex items-center gap-2 shadow-lg shadow-indigo-900/40">
-                            <span>Enviar</span>
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                <!-- Llamadas -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2 text-indigo-600">
+                        <i data-lucide="phone"></i> Protocolo Telefónico (Llamada)
+                    </h3>
+                    <ul class="text-sm space-y-2 text-slate-600 list-disc pl-5">
+                        <li><strong>Control del ritmo:</strong> Realiza pausas activas para verificar que la otra persona está atenta.</li>
+                        <li><strong>Tono consultivo:</strong> Muestra empatía y profesionalismo; evita sonar como un guion automatizado.</li>
+                        <li><strong>Mapeo de dolor:</strong> Identifica el motivo principal de contacto en los primeros 90 segundos de la llamada.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MÓDULO DE PRÁCTICA E INTERACCIÓN -->
+        <section id="sec-practica" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <i data-lucide="play-circle" class="text-indigo-600"></i> Práctica Guiada e Interacción
+                </h2>
+                <p class="text-slate-600 mb-4 text-sm">Selecciona una objeción de prueba y ensaya tu respuesta comercial para recibir recomendaciones automatizadas.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="space-y-4">
+                        <label class="block text-sm font-semibold text-slate-700">Selecciona una Objeción de Caso:</label>
+                        <select id="case-select" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm">
+                            <option value="1">"Está muy caro para mi presupuesto"</option>
+                            <option value="2">"Déjamelo en visto, voy a pensarlo"</option>
+                            <option value="3">"No tengo tiempo para ponerme en esto ahora"</option>
+                        </select>
+                        <button onclick="loadCase()" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-sm">
+                            Cargar Caso en Pantalla
                         </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: BANK OF SCENARIOS -->
-        <section id="tabLibrary" class="hidden flex-1 p-8 overflow-y-auto bg-slate-900">
-            <div class="max-w-5xl mx-auto space-y-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-white">Banco de Escenarios de Práctica</h2>
-                    <p class="text-slate-400 text-sm">Explora las situaciones comerciales precargadas y selecciona la que desees entrenar.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="libraryContainer">
-                    <!-- Rendered dynamically -->
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: RUBRIC & METRICS -->
-        <section id="tabRubric" class="hidden flex-1 p-8 overflow-y-auto bg-slate-900">
-            <div class="max-w-4xl mx-auto space-y-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-white">Rúbrica de Evaluación Comercial</h2>
-                    <p class="text-slate-400 text-sm">Estos son los 4 pilares bajo los cuales el simulador analiza tus interacciones.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
-                        <div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-heart"></i></div>
-                        <h3 class="font-bold text-lg text-white mb-1">1. Empatía y Conexión (25%)</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">Capacidad para validar las objeciones del prospecto sin ponerse a la defensiva. Evita sonar robótico y utiliza un lenguaje cercano y profesional.</p>
                     </div>
 
-                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
-                        <div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <h3 class="font-bold text-lg text-white mb-1">2. Indagación y Diagnóstico (25%)</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">Uso de preguntas abiertas para entender la causa raíz de la duda. Descubre qué busca realmente el cliente antes de dar soluciones precipitadas.</p>
-                    </div>
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-slate-100 p-4 rounded-lg border border-slate-200">
+                            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Cliente dice:</span>
+                            <p id="prompt-display" class="text-slate-800 font-medium mt-1">"Está muy caro para mi presupuesto"</p>
+                        </div>
 
-                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
-                        <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3 class="font-bold text-lg text-white mb-1">3. Manejo de Objeciones (25%)</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">Reencuadre efectivo de precio o falta de tiempo hacia valor/beneficio. Retorno de inversión y resolución de comparativas de competencia.</p>
-                    </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Escribe tu respuesta comercial sugerida:</label>
+                            <textarea id="user-response" rows="4" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Aplica la metodología P.E.C.A. (Pregunta, Explora, Conecta, Avanza)..."></textarea>
+                        </div>
 
-                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
-                        <div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-bullseye"></i></div>
-                        <h3 class="font-bold text-lg text-white mb-1">4. Cierre y Llamado a la Acción (25%)</h3>
-                        <p class="text-xs text-slate-300 leading-relaxed">Propuesta de pasos siguientes claros (doble alternativa de horario, agendamiento de asesoría, cierre de inscripción). Control continuo del avance.</p>
+                        <button onclick="evaluateResponse()" class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-emerald-700 transition-colors text-sm flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Validar Respuesta
+                        </button>
+
+                        <div id="eval-result" class="hidden p-4 rounded-lg border text-sm space-y-2"></div>
                     </div>
                 </div>
             </div>
@@ -196,300 +214,71 @@
 
     </main>
 
-    <!-- JavaScript Logic -->
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
+        <p>Manual Interactivo de Consulta Comercial • Desarrollado para Entrenamiento y Despliegue en GitHub Pages</p>
+    </footer>
+
+    <!-- JavaScript para lógica de pestañas e interacción -->
     <script>
-        // Database of Scenarios
-        const SCENARIOS = {
-            wa1: {
-                id: "wa1",
-                title: "WhatsApp: Está muy caro / No tengo tiempo",
-                channel: "WhatsApp",
-                difficulty: "Intermedio",
-                objective: "Reencuadrar el valor, separar la objeción real y agendar una breve llamada.",
-                initialMessage: "Hola, vi la información que me mandaron pero la verdad está muy cara y casi no tengo tiempo para ponerme a estudiar. Gracias de todos modos.",
-                responses: [
-                    {
-                        keywords: ["entiendo", "comprendo", "tiempo", "inversion"],
-                        reply: "Sí, entiendo que el tiempo es justo. Pero cuéntame algo, ¿el inconveniente principal es acomodar los horarios o el tema del costo?"
-                    },
-                    {
-                        keywords: ["llamar", "llamada", "minutos", "reunion"],
-                        reply: "Ahorita estoy ocupado en el trabajo. Por WhatsApp me queda mejor. ¿Cuánto es lo mínimo en lo que me lo dejan?"
-                    },
-                    {
-                        keywords: ["descuento", "precio", "promocion", "pago"],
-                        reply: "Me interesa si hay una buena facilidades de pago, pero dígame concretamente qué beneficio me garantiza esto."
-                    }
-                ]
-            },
-            wa2: {
-                id: "wa2",
-                title: "WhatsApp: Dejó en visto / Re-enganche",
-                channel: "WhatsApp",
-                difficulty: "Básico",
-                objective: "Recuperar el hilo conversacional sin presionar agresivamente.",
-                initialMessage: "Sí, ya vi el catálogo. Cualquier cosa yo les aviso si me interesa.",
-                responses: [
-                    {
-                        keywords: ["duda", "pregunta", "especifico", "buscando"],
-                        reply: "Buscaba algo que me ayude a mejorar rápido en mi puesto actual, pero no sé si este programa realmente aplique para mi área."
-                    },
-                    {
-                        keywords: ["area", "trabajo", "puesto", "experiencia"],
-                        reply: "Trabajo en la parte comercial y operativa. ¿Tienen algún módulo específico sobre eso?"
-                    }
-                ]
-            },
-            wa3: {
-                id: "wa3",
-                title: "WhatsApp: Comparación con Competencia",
-                channel: "WhatsApp",
-                difficulty: "Avanzado",
-                objective: "Diferenciar la propuesta de valor sin descalificar al competidor.",
-                initialMessage: "Estuve revisando y la empresa X me ofrece un curso parecido por la mitad del precio. ¿Por qué el de ustedes es tan costoso?",
-                responses: [
-                    {
-                        keywords: ["diferencia", "calidad", "garantia", "mentor"],
-                        reply: "Ellos me ofrecen certificado y acceso a videos. ¿Ustedes qué me dan adicional que justifique el doble de precio?"
-                    },
-                    {
-                        keywords: ["practica", "acompañamiento", "envivo", "casos"],
-                        reply: "Ok, eso del acompañamiento suena útil. ¿Tienen horarios flexibles en la noche?"
-                    }
-                ]
-            },
-            ll1: {
-                id: "ll1",
-                title: "Llamada: Llamada en Frío / Prisa",
-                channel: "Llamada",
-                difficulty: "Avanzado",
-                objective: "Captar atención en 15 segundos y concretar cita.",
-                initialMessage: "Aló, sí, dígame rápido por favor que voy a entrar a una reunión importante.",
-                responses: [
-                    {
-                        keywords: ["minuto", "rapido", "resumen", "30 segundos"],
-                        reply: "Bueno, cuéntame rápido en 30 segundos de qué se trata."
-                    },
-                    {
-                        keywords: ["agenda", "mañana", "tarde", "reunion"],
-                        reply: "Listo, escríbeme mañana a las 10:00 am y lo revisamos brevemente."
-                    }
-                ]
-            },
-            ll2: {
-                id: "ll2",
-                title: "Llamada: Debo consultarlo con un tercero",
-                channel: "Llamada",
-                difficulty: "Intermedio",
-                objective: "Identificar si es objeción real o evasiva e involucrar al decisor.",
-                initialMessage: "Me parece interesante todo lo que me dices, pero la decisión no la tomo solo. Debo hablarlo con mi jefe/socio.",
-                responses: [
-                    {
-                        keywords: ["jefe", "socio", "los tres", "reunion"],
-                        reply: "Podría presentarle la idea el jueves, pero necesitaría que me envíes un resumen ejecutivo por correo primero."
-                    }
-                ]
-            }
-        };
+        lucide.createIcons();
 
-        let currentScenario = SCENARIOS.wa1;
-        let chatHistory = [];
-
-        // App Initialization
-        window.onload = () => {
-            renderLibrary();
-            loadSelectedScenario();
-        };
-
-        // Navigation Tabs
-        function switchTab(tab) {
-            document.getElementById('tabSimulator').classList.add('hidden');
-            document.getElementById('tabLibrary').classList.add('hidden');
-            document.getElementById('tabRubric').classList.add('hidden');
-
-            document.getElementById('btnNavSimulator').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
-            document.getElementById('btnNavLibrary').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
-            document.getElementById('btnNavRubric').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
-
-            if (tab === 'simulator') {
-                document.getElementById('tabSimulator').classList.remove('hidden');
-                document.getElementById('btnNavSimulator').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
-            } else if (tab === 'library') {
-                document.getElementById('tabLibrary').classList.remove('hidden');
-                document.getElementById('btnNavLibrary').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
-            } else if (tab === 'rubric') {
-                document.getElementById('tabRubric').classList.remove('hidden');
-                document.getElementById('btnNavRubric').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
-            }
-        }
-
-        // Scenario Management
-        function loadSelectedScenario() {
-            const select = document.getElementById('scenarioSelect');
-            currentScenario = SCENARIOS[select.value];
+        function switchTab(tabId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             
-            document.getElementById('badgeChannel').innerText = currentScenario.channel;
-            document.getElementById('badgeDifficulty').innerText = currentScenario.difficulty;
-            document.getElementById('scenarioObjective').innerText = currentScenario.objective;
+            // Quitar clase activa de los botones
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-tab'));
 
-            resetSimulation();
+            // Mostrar sección seleccionada
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+
+            // Marcar botón activo
+            document.getElementById('tab-' + tabId).classList.add('active-tab');
         }
 
-        function selectScenarioFromLibrary(id) {
-            document.getElementById('scenarioSelect').value = id;
-            switchTab('simulator');
-            loadSelectedScenario();
-        }
-
-        function resetSimulation() {
-            chatHistory = [];
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = '';
-            
-            // Add Initial Prospect Message
-            addMessage('client', currentScenario.initialMessage);
-        }
-
-        // Chat UI Operations
-        function addMessage(sender, text) {
-            chatHistory.push({ sender, text, timestamp: new Date() });
-            const container = document.getElementById('chatMessages');
-
-            const isClient = sender === 'client';
-            const isSystem = sender === 'system';
-
-            let msgHtml = '';
-
-            if (isSystem) {
-                msgHtml = `
-                    <div class="flex justify-center my-4">
-                        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4 text-xs text-slate-300 max-w-xl space-y-2">
-                            ${text}
-                        </div>
-                    </div>
-                `;
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
             } else {
-                msgHtml = `
-                    <div class="flex flex-col ${isClient ? 'items-start' : 'items-end'}">
-                        <span class="text-[10px] text-slate-500 mb-1 px-1">${isClient ? 'Cliente' : 'Tú (Asesor)'}</span>
-                        <div class="max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
-                            isClient 
-                            ? 'bg-slate-800 text-slate-100 rounded-tl-none border border-slate-700/50' 
-                            : 'bg-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-900/20'
-                        }">
-                            ${text}
-                        </div>
-                    </div>
-                `;
+                el.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
             }
-
-            container.innerHTML += msgHtml;
-            container.scrollTop = container.scrollHeight;
         }
 
-        // Interaction Handler
-        function handleSendMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('userInput');
-            const text = input.value.trim();
-            
-            if (!text) return;
+        function loadCase() {
+            const select = document.getElementById('case-select');
+            const display = document.getElementById('prompt-display');
+            display.innerText = select.options[select.selectedIndex].text;
+            document.getElementById('user-response').value = '';
+            document.getElementById('eval-result').classList.add('hidden');
+        }
 
-            addMessage('user', text);
-            input.value = '';
+        function evaluateResponse() {
+            const text = document.getElementById('user-response').value.trim();
+            const resultDiv = document.getElementById('eval-result');
 
-            if (text.toUpperCase().includes('[EVALUAR]') || text.toUpperCase().includes('EVALUAR')) {
-                triggerEvaluation();
+            if (!text) {
+                alert('Por favor escribe tu respuesta antes de validar.');
                 return;
             }
 
-            // Simulate Bot / Client Response
-            setTimeout(() => {
-                const botResponse = generateClientReply(text);
-                addMessage('client', botResponse);
-            }, 1000);
-        }
+            resultDiv.classList.remove('hidden');
 
-        function generateClientReply(userText) {
-            const lower = userText.toLowerCase();
-            const matches = currentScenario.responses;
+            // Verificaciones simples de elementos clave
+            const hasQuestion = text.includes('?');
+            const isLong = text.length > 30;
 
-            for (let r of matches) {
-                if (r.keywords.some(kw => lower.includes(kw))) {
-                    return r.reply;
-                }
+            if (hasQuestion && isLong) {
+                resultDiv.className = 'p-4 rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-800 text-sm space-y-1';
+                resultDiv.innerHTML = '<strong>¡Buen intento!</strong> Tu respuesta incluye una pregunta de indagación para mantener la conversación abierta y suficiente desarrollo argumentativo.';
+            } else {
+                resultDiv.className = 'p-4 rounded-lg border bg-amber-50 border-amber-200 text-amber-800 text-sm space-y-1';
+                resultDiv.innerHTML = '<strong>Recomendación:</strong> Recuerda finalizar siempre con una <strong>pregunta abierta</strong> (¿...?) para evitar que la conversación muera y aplicar el paso "Pregunta/Explora" de P.E.C.A.';
             }
-
-            // Fallback replies
-            const fallbacks = [
-                "Entiendo lo que dices, pero sigo sin estar 100% seguro. ¿Qué otra opción o alternativa me ofrecen?",
-                "Ok, pero ¿eso qué costo adicional tiene?",
-                "Mmm ya veo. Déjame pensarlo y te escribo luego."
-            ];
-            return fallbacks[Math.floor(Math.random() * fallbacks.length)];
-        }
-
-        // Evaluation System
-        function triggerEvaluation() {
-            const userMessages = chatHistory.filter(m => m.sender === 'user');
-            
-            if (userMessages.length === 0) {
-                alert("Por favor interactúa con el cliente enviando al menos un mensaje antes de solicitar evaluación.");
-                return;
-            }
-
-            const evalHtml = `
-                <div class="font-bold text-sm text-emerald-400 flex items-center gap-2 mb-2">
-                    <i class="fa-solid fa-square-poll-vertical text-base"></i> Resultado de la Evaluación SimulaBot
-                </div>
-                <div class="grid grid-cols-2 gap-2 my-2 text-xs">
-                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
-                        <span class="text-slate-400 block">Empatía & Escucha:</span>
-                        <span class="font-bold text-emerald-400">4.5 / 5.0</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
-                        <span class="text-slate-400 block">Indagación:</span>
-                        <span class="font-bold text-amber-400">3.8 / 5.0</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
-                        <span class="text-slate-400 block">Manejo Objeciones:</span>
-                        <span class="font-bold text-emerald-400">4.2 / 5.0</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
-                        <span class="text-slate-400 block">Llamado al Cierre:</span>
-                        <span class="font-bold text-indigo-400">4.0 / 5.0</span>
-                    </div>
-                </div>
-                <div class="text-xs space-y-1.5 text-slate-300">
-                    <p><strong> Fortalezas:</strong> Mantuviste un tono respetuoso y abriste espacio para indagar el problema de fondo sin bajar precios de entrada.</p>
-                    <p><strong> Oportunidad de Mejora:</strong> Intenta hacer preguntas aún más cerradas al final para agendar hora exacta (Ej: <em>"¿Te queda mejor a las 10:00 am o a las 3:00 pm?"</em>).</p>
-                </div>
-            `;
-
-            addMessage('system', evalHtml);
-        }
-
-        // Render Library Cards
-        function renderLibrary() {
-            const container = document.getElementById('libraryContainer');
-            container.innerHTML = Object.values(SCENARIOS).map(sc => `
-                <div class="p-5 rounded-xl glass-panel border border-slate-800 hover:border-indigo-500/50 transition flex flex-col justify-between gap-4">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="px-2 py-0.5 rounded text-[11px] font-medium ${sc.channel === 'WhatsApp' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'}">${sc.channel}</span>
-                            <span class="text-xs text-slate-400">${sc.difficulty}</span>
-                        </div>
-                        <h3 class="font-bold text-white mb-1">${sc.title}</h3>
-                        <p class="text-xs text-slate-400 mb-3">${sc.objective}</p>
-                        <div class="bg-slate-950/50 p-2.5 rounded-lg border border-slate-800 text-xs italic text-slate-300">
-                            "${sc.initialMessage}"
-                        </div>
-                    </div>
-                    <button onclick="selectScenarioFromLibrary('${sc.id}')" class="w-full py-2 bg-indigo-600/80 hover:bg-indigo-600 text-white rounded-lg text-xs font-semibold transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-play text-[10px]"></i> Iniciar este Caso
-                    </button>
-                </div>
-            `).join('');
         }
     </script>
 </body>
