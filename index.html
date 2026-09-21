@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Comercial Interactivo - GitHub Pages App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .chat-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 3px;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col font-sans antialiased overflow-hidden">
+
+    <!-- Header Navigation -->
+    <header class="h-16 border-b border-slate-800 bg-slate-950/80 px-6 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                <i class="fa-solid fa-headset text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg leading-tight text-white">Simulador Comercial Interactivo</h1>
+                <p class="text-xs text-slate-400">Entrenamiento de Destreza y Cierre de Ventas</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="btnNavSimulator" onclick="switchTab('simulator')" class="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2">
+                <i class="fa-solid fa-comments"></i> Simulador
+            </button>
+            <button id="btnNavLibrary" onclick="switchTab('library')" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2">
+                <i class="fa-solid fa-book"></i> Banco de Casos
+            </button>
+            <button id="btnNavRubric" onclick="switchTab('rubric')" class="px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2">
+                <i class="fa-solid fa-chart-simple"></i> Rúbrica
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-1 flex overflow-hidden relative">
+
+        <!-- TAB 1: SIMULATOR (Chat & Interactive Sandbox) -->
+        <section id="tabSimulator" class="flex-1 flex flex-col md:flex-row h-full w-full">
+            
+            <!-- Sidebar / Scenario Configurator -->
+            <aside class="w-full md:w-80 border-r border-slate-800 bg-slate-950/50 p-4 flex flex-col gap-4 shrink-0 overflow-y-auto">
+                <h2 class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Configuración de la Sesión</h2>
+                
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Seleccionar Caso / Escenario</label>
+                    <select id="scenarioSelect" onchange="loadSelectedScenario()" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="wa1">WhatsApp: "Está muy caro / No tengo tiempo"</option>
+                        <option value="wa2">WhatsApp: "Dejó en visto / Re-enganche"</option>
+                        <option value="wa3">WhatsApp: "Comparativo con la Competencia"</option>
+                        <option value="ll1">Llamada: "Llamada en Frío / Prisa"</option>
+                        <option value="ll2">Llamada: "Debo consultarlo con un tercero"</option>
+                    </select>
+                </div>
+
+                <div class="p-3 rounded-lg glass-panel text-xs space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Canal:</span>
+                        <span id="badgeChannel" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-medium">WhatsApp</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Dificultad:</span>
+                        <span id="badgeDifficulty" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">Intermedio</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block mb-1">Objetivo del Asesor:</span>
+                        <p id="scenarioObjective" class="text-slate-200 font-normal">Reencuadrar valor, indagar necesidades reales y agendar llamada.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mt-2">
+                    <button onclick="resetSimulation()" class="w-full py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium transition flex items-center justify-center gap-2 border border-slate-700">
+                        <i class="fa-solid fa-rotate-left"></i> Reiniciar Caso
+                    </button>
+                    <button onclick="triggerEvaluation()" class="w-full py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
+                        <i class="fa-solid fa-check-double"></i> Solicitar Evaluación
+                    </button>
+                </div>
+
+                <div class="mt-auto pt-4 border-t border-slate-800/80">
+                    <div class="text-[11px] text-slate-500 space-y-1">
+                        <p><i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> <strong>Tip Comercial:</strong> No ofrezcas descuentos de inmediato. Indaga la razón detrás del precio antes de argumentar.</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Chat / Simulation Area -->
+            <div class="flex-1 flex flex-col h-full bg-slate-900 relative">
+                
+                <!-- Chat Header -->
+                <div class="h-14 border-b border-slate-800 px-6 flex items-center justify-between bg-slate-900/90 z-10">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-sm border border-indigo-500/30">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute bottom-0 right-0 ring-2 ring-slate-900"></span>
+                        </div>
+                        <div>
+                            <h3 id="chatClientName" class="font-semibold text-sm text-white">Prospecto (Simulación)</h3>
+                            <p id="chatClientStatus" class="text-[11px] text-slate-400">Respondiendo en tiempo real...</p>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400 bg-slate-800/60 px-3 py-1 rounded-full">
+                        Escribe <span class="text-indigo-400 font-mono">[EVALUAR]</span> para finalizar.
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4 chat-scroll">
+                    <!-- Dynamic Messages injected via JS -->
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-4 border-t border-slate-800 bg-slate-950/60">
+                    <form id="chatForm" onsubmit="handleSendMessage(event)" class="flex gap-2">
+                        <input id="userInput" type="text" placeholder="Escribe tu respuesta comercial aquí..." autocomplete="off"
+                               class="flex-1 bg-slate-800/90 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl transition font-medium flex items-center gap-2 shadow-lg shadow-indigo-900/40">
+                            <span>Enviar</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: BANK OF SCENARIOS -->
+        <section id="tabLibrary" class="hidden flex-1 p-8 overflow-y-auto bg-slate-900">
+            <div class="max-w-5xl mx-auto space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Banco de Escenarios de Práctica</h2>
+                    <p class="text-slate-400 text-sm">Explora las situaciones comerciales precargadas y selecciona la que desees entrenar.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="libraryContainer">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: RUBRIC & METRICS -->
+        <section id="tabRubric" class="hidden flex-1 p-8 overflow-y-auto bg-slate-900">
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Rúbrica de Evaluación Comercial</h2>
+                    <p class="text-slate-400 text-sm">Estos son los 4 pilares bajo los cuales el simulador analiza tus interacciones.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
+                        <div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-heart"></i></div>
+                        <h3 class="font-bold text-lg text-white mb-1">1. Empatía y Conexión (25%)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">Capacidad para validar las objeciones del prospecto sin ponerse a la defensiva. Evita sonar robótico y utiliza un lenguaje cercano y profesional.</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
+                        <div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <h3 class="font-bold text-lg text-white mb-1">2. Indagación y Diagnóstico (25%)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">Uso de preguntas abiertas para entender la causa raíz de la duda. Descubre qué busca realmente el cliente antes de dar soluciones precipitadas.</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
+                        <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-bold text-lg text-white mb-1">3. Manejo de Objeciones (25%)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">Reencuadre efectivo de precio o falta de tiempo hacia valor/beneficio. Retorno de inversión y resolución de comparativas de competencia.</p>
+                    </div>
+
+                    <div class="p-5 rounded-xl glass-panel border border-slate-700/50">
+                        <div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3 class="font-bold text-lg text-white mb-1">4. Cierre y Llamado a la Acción (25%)</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">Propuesta de pasos siguientes claros (doble alternativa de horario, agendamiento de asesoría, cierre de inscripción). Control continuo del avance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Database of Scenarios
+        const SCENARIOS = {
+            wa1: {
+                id: "wa1",
+                title: "WhatsApp: Está muy caro / No tengo tiempo",
+                channel: "WhatsApp",
+                difficulty: "Intermedio",
+                objective: "Reencuadrar el valor, separar la objeción real y agendar una breve llamada.",
+                initialMessage: "Hola, vi la información que me mandaron pero la verdad está muy cara y casi no tengo tiempo para ponerme a estudiar. Gracias de todos modos.",
+                responses: [
+                    {
+                        keywords: ["entiendo", "comprendo", "tiempo", "inversion"],
+                        reply: "Sí, entiendo que el tiempo es justo. Pero cuéntame algo, ¿el inconveniente principal es acomodar los horarios o el tema del costo?"
+                    },
+                    {
+                        keywords: ["llamar", "llamada", "minutos", "reunion"],
+                        reply: "Ahorita estoy ocupado en el trabajo. Por WhatsApp me queda mejor. ¿Cuánto es lo mínimo en lo que me lo dejan?"
+                    },
+                    {
+                        keywords: ["descuento", "precio", "promocion", "pago"],
+                        reply: "Me interesa si hay una buena facilidades de pago, pero dígame concretamente qué beneficio me garantiza esto."
+                    }
+                ]
+            },
+            wa2: {
+                id: "wa2",
+                title: "WhatsApp: Dejó en visto / Re-enganche",
+                channel: "WhatsApp",
+                difficulty: "Básico",
+                objective: "Recuperar el hilo conversacional sin presionar agresivamente.",
+                initialMessage: "Sí, ya vi el catálogo. Cualquier cosa yo les aviso si me interesa.",
+                responses: [
+                    {
+                        keywords: ["duda", "pregunta", "especifico", "buscando"],
+                        reply: "Buscaba algo que me ayude a mejorar rápido en mi puesto actual, pero no sé si este programa realmente aplique para mi área."
+                    },
+                    {
+                        keywords: ["area", "trabajo", "puesto", "experiencia"],
+                        reply: "Trabajo en la parte comercial y operativa. ¿Tienen algún módulo específico sobre eso?"
+                    }
+                ]
+            },
+            wa3: {
+                id: "wa3",
+                title: "WhatsApp: Comparación con Competencia",
+                channel: "WhatsApp",
+                difficulty: "Avanzado",
+                objective: "Diferenciar la propuesta de valor sin descalificar al competidor.",
+                initialMessage: "Estuve revisando y la empresa X me ofrece un curso parecido por la mitad del precio. ¿Por qué el de ustedes es tan costoso?",
+                responses: [
+                    {
+                        keywords: ["diferencia", "calidad", "garantia", "mentor"],
+                        reply: "Ellos me ofrecen certificado y acceso a videos. ¿Ustedes qué me dan adicional que justifique el doble de precio?"
+                    },
+                    {
+                        keywords: ["practica", "acompañamiento", "envivo", "casos"],
+                        reply: "Ok, eso del acompañamiento suena útil. ¿Tienen horarios flexibles en la noche?"
+                    }
+                ]
+            },
+            ll1: {
+                id: "ll1",
+                title: "Llamada: Llamada en Frío / Prisa",
+                channel: "Llamada",
+                difficulty: "Avanzado",
+                objective: "Captar atención en 15 segundos y concretar cita.",
+                initialMessage: "Aló, sí, dígame rápido por favor que voy a entrar a una reunión importante.",
+                responses: [
+                    {
+                        keywords: ["minuto", "rapido", "resumen", "30 segundos"],
+                        reply: "Bueno, cuéntame rápido en 30 segundos de qué se trata."
+                    },
+                    {
+                        keywords: ["agenda", "mañana", "tarde", "reunion"],
+                        reply: "Listo, escríbeme mañana a las 10:00 am y lo revisamos brevemente."
+                    }
+                ]
+            },
+            ll2: {
+                id: "ll2",
+                title: "Llamada: Debo consultarlo con un tercero",
+                channel: "Llamada",
+                difficulty: "Intermedio",
+                objective: "Identificar si es objeción real o evasiva e involucrar al decisor.",
+                initialMessage: "Me parece interesante todo lo que me dices, pero la decisión no la tomo solo. Debo hablarlo con mi jefe/socio.",
+                responses: [
+                    {
+                        keywords: ["jefe", "socio", "los tres", "reunion"],
+                        reply: "Podría presentarle la idea el jueves, pero necesitaría que me envíes un resumen ejecutivo por correo primero."
+                    }
+                ]
+            }
+        };
+
+        let currentScenario = SCENARIOS.wa1;
+        let chatHistory = [];
+
+        // App Initialization
+        window.onload = () => {
+            renderLibrary();
+            loadSelectedScenario();
+        };
+
+        // Navigation Tabs
+        function switchTab(tab) {
+            document.getElementById('tabSimulator').classList.add('hidden');
+            document.getElementById('tabLibrary').classList.add('hidden');
+            document.getElementById('tabRubric').classList.add('hidden');
+
+            document.getElementById('btnNavSimulator').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
+            document.getElementById('btnNavLibrary').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
+            document.getElementById('btnNavRubric').className = "px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-2";
+
+            if (tab === 'simulator') {
+                document.getElementById('tabSimulator').classList.remove('hidden');
+                document.getElementById('btnNavSimulator').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
+            } else if (tab === 'library') {
+                document.getElementById('tabLibrary').classList.remove('hidden');
+                document.getElementById('btnNavLibrary').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
+            } else if (tab === 'rubric') {
+                document.getElementById('tabRubric').classList.remove('hidden');
+                document.getElementById('btnNavRubric').className = "px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition flex items-center gap-2";
+            }
+        }
+
+        // Scenario Management
+        function loadSelectedScenario() {
+            const select = document.getElementById('scenarioSelect');
+            currentScenario = SCENARIOS[select.value];
+            
+            document.getElementById('badgeChannel').innerText = currentScenario.channel;
+            document.getElementById('badgeDifficulty').innerText = currentScenario.difficulty;
+            document.getElementById('scenarioObjective').innerText = currentScenario.objective;
+
+            resetSimulation();
+        }
+
+        function selectScenarioFromLibrary(id) {
+            document.getElementById('scenarioSelect').value = id;
+            switchTab('simulator');
+            loadSelectedScenario();
+        }
+
+        function resetSimulation() {
+            chatHistory = [];
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+            
+            // Add Initial Prospect Message
+            addMessage('client', currentScenario.initialMessage);
+        }
+
+        // Chat UI Operations
+        function addMessage(sender, text) {
+            chatHistory.push({ sender, text, timestamp: new Date() });
+            const container = document.getElementById('chatMessages');
+
+            const isClient = sender === 'client';
+            const isSystem = sender === 'system';
+
+            let msgHtml = '';
+
+            if (isSystem) {
+                msgHtml = `
+                    <div class="flex justify-center my-4">
+                        <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4 text-xs text-slate-300 max-w-xl space-y-2">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            } else {
+                msgHtml = `
+                    <div class="flex flex-col ${isClient ? 'items-start' : 'items-end'}">
+                        <span class="text-[10px] text-slate-500 mb-1 px-1">${isClient ? 'Cliente' : 'Tú (Asesor)'}</span>
+                        <div class="max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
+                            isClient 
+                            ? 'bg-slate-800 text-slate-100 rounded-tl-none border border-slate-700/50' 
+                            : 'bg-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-900/20'
+                        }">
+                            ${text}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML += msgHtml;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Interaction Handler
+        function handleSendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+
+            addMessage('user', text);
+            input.value = '';
+
+            if (text.toUpperCase().includes('[EVALUAR]') || text.toUpperCase().includes('EVALUAR')) {
+                triggerEvaluation();
+                return;
+            }
+
+            // Simulate Bot / Client Response
+            setTimeout(() => {
+                const botResponse = generateClientReply(text);
+                addMessage('client', botResponse);
+            }, 1000);
+        }
+
+        function generateClientReply(userText) {
+            const lower = userText.toLowerCase();
+            const matches = currentScenario.responses;
+
+            for (let r of matches) {
+                if (r.keywords.some(kw => lower.includes(kw))) {
+                    return r.reply;
+                }
+            }
+
+            // Fallback replies
+            const fallbacks = [
+                "Entiendo lo que dices, pero sigo sin estar 100% seguro. ¿Qué otra opción o alternativa me ofrecen?",
+                "Ok, pero ¿eso qué costo adicional tiene?",
+                "Mmm ya veo. Déjame pensarlo y te escribo luego."
+            ];
+            return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        }
+
+        // Evaluation System
+        function triggerEvaluation() {
+            const userMessages = chatHistory.filter(m => m.sender === 'user');
+            
+            if (userMessages.length === 0) {
+                alert("Por favor interactúa con el cliente enviando al menos un mensaje antes de solicitar evaluación.");
+                return;
+            }
+
+            const evalHtml = `
+                <div class="font-bold text-sm text-emerald-400 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-square-poll-vertical text-base"></i> Resultado de la Evaluación SimulaBot
+                </div>
+                <div class="grid grid-cols-2 gap-2 my-2 text-xs">
+                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                        <span class="text-slate-400 block">Empatía & Escucha:</span>
+                        <span class="font-bold text-emerald-400">4.5 / 5.0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                        <span class="text-slate-400 block">Indagación:</span>
+                        <span class="font-bold text-amber-400">3.8 / 5.0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                        <span class="text-slate-400 block">Manejo Objeciones:</span>
+                        <span class="font-bold text-emerald-400">4.2 / 5.0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                        <span class="text-slate-400 block">Llamado al Cierre:</span>
+                        <span class="font-bold text-indigo-400">4.0 / 5.0</span>
+                    </div>
+                </div>
+                <div class="text-xs space-y-1.5 text-slate-300">
+                    <p><strong> Fortalezas:</strong> Mantuviste un tono respetuoso y abriste espacio para indagar el problema de fondo sin bajar precios de entrada.</p>
+                    <p><strong> Oportunidad de Mejora:</strong> Intenta hacer preguntas aún más cerradas al final para agendar hora exacta (Ej: <em>"¿Te queda mejor a las 10:00 am o a las 3:00 pm?"</em>).</p>
+                </div>
+            `;
+
+            addMessage('system', evalHtml);
+        }
+
+        // Render Library Cards
+        function renderLibrary() {
+            const container = document.getElementById('libraryContainer');
+            container.innerHTML = Object.values(SCENARIOS).map(sc => `
+                <div class="p-5 rounded-xl glass-panel border border-slate-800 hover:border-indigo-500/50 transition flex flex-col justify-between gap-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-medium ${sc.channel === 'WhatsApp' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'}">${sc.channel}</span>
+                            <span class="text-xs text-slate-400">${sc.difficulty}</span>
+                        </div>
+                        <h3 class="font-bold text-white mb-1">${sc.title}</h3>
+                        <p class="text-xs text-slate-400 mb-3">${sc.objective}</p>
+                        <div class="bg-slate-950/50 p-2.5 rounded-lg border border-slate-800 text-xs italic text-slate-300">
+                            "${sc.initialMessage}"
+                        </div>
+                    </div>
+                    <button onclick="selectScenarioFromLibrary('${sc.id}')" class="w-full py-2 bg-indigo-600/80 hover:bg-indigo-600 text-white rounded-lg text-xs font-semibold transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play text-[10px]"></i> Iniciar este Caso
+                    </button>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
