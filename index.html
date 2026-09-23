@@ -3,17 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual de Consulta Comercial | USAM</title>
+    <title>Manual de Consulta Comercial | USAM Costa Rica</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        .channel-tab-active {
-            background-color: #2563eb;
-            color: #ffffff;
-        }
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
@@ -24,7 +18,7 @@
                 <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-300"></i>
                 <div>
                     <h1 class="text-xl font-bold tracking-wide">Manual de Consulta Comercial</h1>
-                    <p class="text-xs text-indigo-200">Guía rápida de gestión por canal (WhatsApp & Llamada)</p>
+                    <p class="text-xs text-indigo-200">Guía rápida de gestión por canal (WhatsApp & Llamada) • Adaptado a Costa Rica 🇨🇷</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 bg-indigo-800 px-3 py-1.5 rounded-lg text-xs font-medium border border-indigo-700">
@@ -34,7 +28,7 @@
         </div>
     </header>
 
-    <!-- Bar de Filtros y Búsqueda -->
+    <!-- Barra de Filtros y Búsqueda -->
     <section class="bg-white border-b border-slate-200 shadow-sm sticky top-[72px] z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
             
@@ -59,37 +53,36 @@
     <!-- Contenido Principal: Tarjetas de Consulta -->
     <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
         <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Renderizado dinámico vía JavaScript con los datos exactos del Excel -->
+            <!-- Renderizado dinámico vía JavaScript -->
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800">
-        <p>Manual de Consulta Comercial • Herramienta de Soporte y Productividad Comercial</p>
+        <p>Manual de Consulta Comercial • USAM Costa Rica • Herramienta de Soporte y Productividad Comercial</p>
     </footer>
 
-    <!-- Scripts y Datos -->
+    <!-- Scripts y Datos con Voceo de Costa Rica -->
     <script>
-        // Datos extraídos directamente de manejo whatsapp-llamada.xlsx
         const data = [
-            { id: 1, cat: 'contacto', momento: "1. Saludo inicial", objetivo: "Generar cercanía y abrir conversación", wa: "¡Hola, [Nombre]! 👋 Soy [Experto] de USAM. Es un gusto acompañarte en tu proceso de admisión. Cuéntame, ¿qué programa estás buscando y qué te motivó a iniciar este proceso?", ll: "Hola, [Nombre], te saluda [Experto] de USAM. Te contacto porque recibimos tu solicitud sobre [programa]. Quiero conocer qué estás buscando para orientarte de manera precisa. Cuéntame, ¿qué te motivó a consultar por este programa?" },
-            { id: 2, cat: 'contacto', momento: "2. Cuando pide “información”", objetivo: "Evitar enviar información genérica", wa: "¡Claro, [Nombre]! Con gusto te ayudo. Para brindarte información realmente útil, cuéntame: ¿qué aspecto quieres conocer primero sobre el programa?", ll: "Claro, [Nombre]. Antes de contarte todos los detalles, quiero conocer qué estás buscando para enfocarme en la información que realmente necesitas. ¿Qué te motivó a consultar por el programa?" },
-            { id: 3, cat: 'perfilamiento', momento: "3. Perfilamiento – motivación", objetivo: "Identificar el motivo de compra", wa: "¿Qué te motivó a buscar este programa en este momento?", ll: "Cuéntame, ¿qué te llevó a buscar una formación en esta área justamente ahora?" },
-            { id: 4, cat: 'perfilamiento', momento: "4. Perfilamiento – objetivo", objetivo: "Identificar el resultado esperado", wa: "¿Qué quieres lograr profesionalmente al finalizar tus estudios?", ll: "Pensando en tu desarrollo profesional, ¿qué te gustaría conseguir al finalizar esta formación?" },
-            { id: 5, cat: 'perfilamiento', momento: "5. Perfilamiento – necesidad", objetivo: "Detectar necesidad concreta", wa: "¿Qué aspecto de tu perfil profesional buscas fortalecer actualmente?", ll: "¿Qué competencia, conocimiento o aspecto de tu perfil sientes que necesitas fortalecer en este momento?" },
-            { id: 6, cat: 'perfilamiento', momento: "6. Perfilamiento – decisión", objetivo: "Conocer criterio de compra", wa: "¿Qué es lo más importante para ti al momento de elegir una universidad?", ll: "Cuando comparas opciones de formación, ¿qué factores tienen mayor peso para tomar tu decisión?" },
-            { id: 7, cat: 'propuesta', momento: "7. Conectar necesidad + programa", objetivo: "Personalizar el argumento", wa: "Por lo que me comentas sobre [necesidad], quiero destacar especialmente [atributo/diferencial], porque se relaciona directamente con lo que estás buscando.", ll: "Teniendo en cuenta que tu objetivo es [objetivo], quiero mostrarte cómo [atributo del programa] puede responder específicamente a esa necesidad." },
+            { id: 1, cat: 'contacto', momento: "1. Saludo inicial", objetivo: "Generar cercanía y abrir conversación", wa: "¡Hola, [Nombre]! 👋 Soy [Experto] de USAM. Es un gusto acompañarte en tu proceso de admisión. Contame, ¿qué programa estás buscando y qué te motivó a iniciar este proceso?", ll: "Hola, [Nombre], te saluda [Experto] de USAM. Te contacto porque recibimos tu solicitud sobre [programa]. Quiero conocer qué estás buscando para orientarte de manera precisa. Contame, ¿qué te motivó a consultar por este programa?" },
+            { id: 2, cat: 'contacto', momento: "2. Cuando pide “información”", objetivo: "Evitar enviar información genérica", wa: "¡Claro, [Nombre]! Con gusto te ayudo. Para brindarte información realmente útil, contame: ¿qué aspecto querés conocer primero sobre el programa?", ll: "Claro, [Nombre]. Antes de contarte todos los detalles, quiero conocer qué estás buscando para enfocarme en la información que realmente necesitás. ¿Qué te motivó a consultar por el programa?" },
+            { id: 3, cat: 'perfilamiento', momento: "3. Perfilamiento – motivación", objetivo: "Identificar el motivo de compra", wa: "¿Qué te motivó a buscar este programa en este momento?", ll: "Contame, ¿qué te llevó a buscar una formación en esta área justamente ahora?" },
+            { id: 4, cat: 'perfilamiento', momento: "4. Perfilamiento – objetivo", objetivo: "Identificar el resultado esperado", wa: "¿Qué querés lograr profesionalmente al finalizar tus estudios?", ll: "Pensando en tu desarrollo profesional, ¿qué te gustaría conseguir al finalizar esta formación?" },
+            { id: 5, cat: 'perfilamiento', momento: "5. Perfilamiento – necesidad", objetivo: "Detectar necesidad concreta", wa: "¿Qué aspecto de tu perfil profesional buscás fortalecer actualmente?", ll: "¿Qué competencia, conocimiento o aspecto de tu perfil sentís que necesitás fortalecer en este momento?" },
+            { id: 6, cat: 'perfilamiento', momento: "6. Perfilamiento – decisión", objetivo: "Conocer criterio de compra", wa: "¿Qué es lo más importante para vos al momento de elegir una universidad?", ll: "Cuando comparás opciones de formación, ¿qué factores tienen mayor peso para tomar tu decisión?" },
+            { id: 7, cat: 'propuesta', momento: "7. Conectar necesidad + programa", objetivo: "Personalizar el argumento", wa: "Por lo que me comentás sobre [necesidad], quiero destacar especialmente [atributo/diferencial], porque se relaciona directamente con lo que estás buscando.", ll: "Teniendo en cuenta que tu objetivo es [objetivo], quiero mostrarte cómo [atributo del programa] puede responder específicamente a esa necesidad." },
             { id: 8, cat: 'propuesta', momento: "8. Presentar el programa", objetivo: "Comunicar valor, no solo características", wa: "Además de [característica], uno de los aspectos que quiero destacar es [beneficio], ya que puede aportarte directamente en [necesidad detectada].", ll: "Más allá de las características del programa, quiero destacar [beneficio], porque está directamente relacionado con el objetivo que me comentaste." },
-            { id: 9, cat: 'propuesta', momento: "9. Presentar inversión", objetivo: "Comunicar precio con seguridad", wa: "La inversión regular es de [valor]. Actualmente cuentas con [beneficio], por lo que tu inversión queda en [valor final]. Te compartiré la cotización con el detalle completo.", ll: "La inversión regular del programa es de [valor]. Actualmente tienes disponible [beneficio], por lo que el valor aplicable a tu proceso sería de [valor final]." },
-            { id: 10, cat: 'propuesta', momento: "10. Enviar cotización", objetivo: "Dar contexto al documento", wa: "Te comparto tu cotización 📄 con el detalle de la inversión y los beneficios disponibles. Revísala y avanzamos con el siguiente paso de tu proceso.", ll: "Voy a compartirte la cotización para que tengas el detalle de la inversión y las condiciones aplicables. Una vez la revises, avanzamos con el siguiente paso." },
+            { id: 9, cat: 'propuesta', momento: "9. Presentar inversión", objetivo: "Comunicar precio con seguridad", wa: "La inversión regular es de [valor]. Actualmente contás con [beneficio], por lo que tu inversión queda en [valor final]. Te compartiré la cotización con el detalle completo.", ll: "La inversión regular del programa es de [valor]. Actualmente tenés disponible [beneficio], por lo que el valor aplicable a tu proceso sería de [valor final]." },
+            { id: 10, cat: 'propuesta', momento: "10. Enviar cotización", objetivo: "Dar contexto al documento", wa: "Te comparto tu cotización 📄 con el detalle de la inversión y los beneficios disponibles. Revisala y avanzamos con el siguiente paso de tu proceso.", ll: "Voy a compartirte la cotización para que tengás el detalle de la inversión y las condiciones aplicables. Una vez la revisés, avanzamos con el siguiente paso." },
             { id: 11, cat: 'objeciones', momento: "11. “Está muy caro”", objetivo: "Identificar la verdadera barrera", wa: "Entiendo, [Nombre]. Para orientarte correctamente, ¿la inversión es el principal aspecto que estás evaluando frente a otras opciones o hay algún otro factor que también estás considerando?", ll: "Entiendo. Para poder orientarte mejor, quiero identificar si la inversión es la principal barrera o si también estás evaluando algún otro aspecto del programa." },
-            { id: 12, cat: 'objeciones', momento: "12. “Lo voy a pensar”", objetivo: "Profundizar antes de cerrar", wa: "Claro. Antes de dejarlo para después, quiero asegurarme de que tengas toda la información necesaria. ¿Qué aspecto necesitas revisar con mayor detalle para tomar la decisión?", ll: "Claro, es importante que tomes una decisión con toda la información. Antes de finalizar, ¿qué aspecto necesitas tener más claro para avanzar?" },
-            { id: 13, cat: 'objeciones', momento: "13. “Voy a comparar”", objetivo: "Mantener la conversación comercial", wa: "Perfecto. Para que puedas comparar de manera objetiva, revisa plan de estudios, modalidad, duración, inversión y diferenciales. Yo te compartiré la información completa de USAM.", ll: "Es totalmente válido comparar alternativas. Te recomiendo revisar plan de estudios, modalidad, duración, inversión y diferenciales. Quiero asegurarme de que tengas toda la información de USAM para hacerlo." },
-            { id: 14, cat: 'objeciones', momento: "14. “Tengo que consultarlo”", objetivo: "Mantener avance", wa: "Perfecto. Te compartiré la cotización y la información principal para que puedas revisarla. Después retomamos el proceso y resolvemos cualquier inquietud.", ll: "Perfecto. Te compartiré la información para que puedas revisarla con ellos. Antes de finalizar, quiero asegurarme de que tengas claro el siguiente paso del proceso." },
-            { id: 15, cat: 'cierre', momento: "15. Seguimiento", objetivo: "Retomar sin sonar insistente", wa: "Hola, [Nombre] 👋 Retomo nuestra conversación sobre [programa]. Quiero ayudarte a avanzar con la información que necesitas. Cuéntame, ¿qué inquietud te surgió después de revisar la información?", ll: "Hola, [Nombre]. Retomo nuestro proceso sobre [programa]. Quiero conocer cómo avanzaste después de revisar la información y qué necesitas resolver para continuar." },
-            { id: 16, cat: 'cierre', momento: "16. Documentación pendiente", objetivo: "Llevar a acción", wa: "Para continuar con tu proceso, envíame los documentos pendientes y dejamos lista esta etapa de admisión.", ll: "Para avanzar con tu proceso, el siguiente paso es completar la documentación pendiente. Una vez la tengamos, podemos continuar con tu matrícula." },
-            { id: 17, cat: 'cierre', momento: "17. Cierre de matrícula", objetivo: "Generar acción concreta", wa: "Con la información que revisamos, avancemos hoy con tu matrícula para dejar listo tu ingreso a la próxima cohorte.", ll: "Ya revisamos el programa, resolvimos tus inquietudes y tienes claridad sobre la inversión. Avancemos entonces con tu matrícula." },
-            { id: 18, cat: 'cierre', momento: "18. Aspirante no responde", objetivo: "Reactivar conversación", wa: "Hola, [Nombre] 👋 Retomo nuestra conversación sobre [programa]. Quiero ayudarte a avanzar con tu proceso. ¿Continuamos con la revisión de la información?", ll: "Hola, [Nombre]. Te contacto nuevamente para dar continuidad al proceso que iniciamos. Quiero conocer si ya pudiste revisar la información y qué necesitas para avanzar." }
+            { id: 12, cat: 'objeciones', momento: "12. “Lo voy a pensar”", objetivo: "Profundizar antes de cerrar", wa: "Claro. Antes de dejarlo para después, quiero asegurarme de que tengás toda la información necesaria. ¿Qué aspecto necesitás revisar con mayor detalle para tomar la decisión?", ll: "Claro, es importante que tomés una decisión con toda la información. Antes de finalizar, ¿qué aspecto necesitás tener más claro para avanzar?" },
+            { id: 13, cat: 'objeciones', momento: "13. “Voy a comparar”", objetivo: "Mantener la conversación comercial", wa: "Perfecto. Para que podás comparar de manera objetiva, revisá plan de estudios, modalidad, duración, inversión y diferenciales. Yo te compartiré la información completa de USAM.", ll: "Es totalmente válido comparar alternativas. Te recomiendo revisar plan de estudios, modalidad, duración, inversión y diferenciales. Quiero asegurarme de que tengás toda la información de USAM para hacerlo." },
+            { id: 14, cat: 'objeciones', momento: "14. “Tengo que consultarlo”", objetivo: "Mantener avance", wa: "Perfecto. Te compartiré la cotización y la información principal para que podás revisarla. Después retomamos el proceso y resolvemos cualquier inquietud.", ll: "Perfecto. Te compartiré la información para que podás revisarla con ellos. Antes de finalizar, quiero asegurarme de que tengás claro el siguiente paso del proceso." },
+            { id: 15, cat: 'cierre', momento: "15. Seguimiento", objetivo: "Retomar sin sonar insistente", wa: "Hola, [Nombre] 👋 Retomo nuestra conversación sobre [programa]. Quiero ayudarte a avanzar con la información que necesitás. Contame, ¿qué inquietud te surgió después de revisar la información?", ll: "Hola, [Nombre]. Retomo nuestro proceso sobre [programa]. Quiero conocer cómo avanzaste después de revisar la información y qué necesitás resolver para continuar." },
+            { id: 16, cat: 'cierre', momento: "16. Documentación pendiente", objetivo: "Llevar a acción", wa: "Para continuar con tu proceso, enviame los documentos pendientes y dejamos lista esta etapa de admisión.", ll: "Para avanzar con tu proceso, el siguiente paso es completar la documentación pendiente. Una vez la tengamos, podemos continuar con tu matrícula." },
+            { id: 17, cat: 'cierre', momento: "17. Cierre de matrícula", objetivo: "Generar acción concreta", wa: "Con la información que revisamos, avancemos hoy con tu matrícula para dejar listo tu ingreso a la próxima cohorte.", ll: "Ya revisamos el programa, resolvimos tus inquietudes y tenés claridad sobre la inversión. Avancemos entonces con tu matrícula." },
+            { id: 18, cat: 'cierre', momento: "18. Aspirante no responde", objetivo: "Reactivar conversación", wa: "Hola, [Nombre] 👋 Retomo nuestra conversación sobre [programa]. Quiero ayudarte a avanzar con tu proceso. ¿Continuamos con la revisión de la información?", ll: "Hola, [Nombre]. Te contacto nuevamente para dar continuidad al proceso que iniciamos. Quiero conocer si ya pudiste revisar la información y qué necesitás para avanzar." }
         ];
 
         let currentCategory = 'all';
